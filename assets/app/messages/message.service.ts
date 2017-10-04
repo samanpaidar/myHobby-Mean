@@ -20,8 +20,18 @@ export class MessageService {
 
     }
 
-    getMessages(){
-        return this.messages;
+    getMessages() {
+        return this.http.get('http://localhost:3000/message')
+            .map((response: Response) => {
+                const messages = response.json().radin;
+                let transformedMessages: Message[] = [];
+                for (let message of messages) {
+                    transformedMessages.push(new Message(message.content, 'Radin', message._id, null));
+                }
+                this.messages = transformedMessages;
+                return transformedMessages;
+            })
+            .catch((error: Response) => Observable.throw(error.json()));
     }
 
     deleteMessage(message:Message){
