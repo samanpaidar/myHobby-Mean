@@ -12,11 +12,16 @@ export class MessageService {
     
     constructor(private http: Http) {}
     addMessage( message : Message ){
-        this.messages.push(message);
+        //this.messages.push(message);
         const body = JSON.stringify(message);
         const headers = new Headers({'Content-Type': 'application/json'});
         return this.http.post('http://localhost:3000/message', body, {headers: headers})
-            .map( (response: Response) => response.json())
+            .map( (response: Response) =>{
+                const result = response.json();
+                const message = new Message(result.obj.content, 'Radin', result.obj._id, null);
+                this.messages.push(message);
+                return message;
+            })
             .catch((error: Response) => Observable.throw(error.json()));
 
     }
@@ -39,8 +44,12 @@ export class MessageService {
         this.messageIsEdit.emit(message);
     }
 
-    updateMessage(message:Message){
-        
+    updateMessage(message: Message) {
+        const body = JSON.stringify(message);
+        const headers = new Headers({'Content-Type': 'application/json'});
+        return this.http.patch('http://localhost:3000/message/' + message.messageId, body, {headers: headers})
+            .map((response: Response) => response.json())
+            .catch((error: Response) => Observable.throw(error.json()));
     }
 
     deleteMessage(message:Message){
