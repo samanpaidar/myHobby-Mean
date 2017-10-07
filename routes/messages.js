@@ -65,6 +65,33 @@ router.patch('/:id', function(req, res, next){
         });
     });
 });
-
+router.delete('/:id',function(req,res,next){
+    Message.findById(req.params.id, function(err, message){
+        if(err){
+            return res.status(500).json({
+                title: 'There is an error',
+                error: err
+            });
+        }
+        if(!message){
+            return res.status(500).json({
+                title: 'There is not any message here!',
+                error: {message:'You have to choose a message'}
+            });
+        }
+        message.remove(function(err, result){
+            if(err){
+                return res.status(500).json({
+                    title: 'There is an error',
+                    error: err
+                });
+            }
+            res.status(200).json({
+                message: 'The message is now deleted',
+                obj: result
+            });
+        });
+    });
+});
 
 module.exports = router;
