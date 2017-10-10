@@ -1,8 +1,7 @@
 var express = require('express');
-var router  = express.Router();
+var router = express.Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
-
 
 var User = require('../models/user');
 
@@ -26,6 +25,7 @@ router.post('/', function (req, res, next) {
         });
     });
 });
+
 router.post('/signin', function(req, res, next) {
     User.findOne({email: req.body.email}, function(err, user) {
         if (err) {
@@ -54,6 +54,5 @@ router.post('/signin', function(req, res, next) {
         });
     });
 });
-
 
 module.exports = router;
