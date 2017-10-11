@@ -26,7 +26,8 @@ export class MessageService {
                     result.obj.content,
                     result.obj.user.firstName,
                     result.obj._id,
-                    result.obj.user._id);
+                    result.obj.user._id,
+                    result.obj.date);
                 this.messages.push(message);
                 return message;
             })
@@ -43,7 +44,8 @@ export class MessageService {
                         message.content,
                         message.user.firstName,
                         message._id,
-                        message.user._id)
+                        message.user._id,
+                        message.date)
                     );
                 }
                 this.messages = transformedMessages;
